@@ -16,18 +16,7 @@
                 <div class="block-header block-header-default">
                     <h3 class="block-title">Categories</h3>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label><strong>Status :</strong></label>
-                            <select id='status' class="form-control" style="width: 200px">
-                                <option value="">--Select Status--</option>
-                                <option value="1">Active</option>
-                                <option value="0">Deactive</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="block-content block-content-full">
                     <!-- DataTables functionality is initialized with .js-dataTable-full class in js/pages/be_tables_datatables.min.js which was auto compiled from _es6/pages/be_tables_datatables.js -->
                     <table id='datatable_ajax' class="table table-bordered table-striped table-vcenter js-dataTable-full">

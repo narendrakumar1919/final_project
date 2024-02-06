@@ -160,12 +160,7 @@
                             </div>
                             <div class="form-group row text-center">
                                 <div class="col-12">
-                                    <label class="css-control css-control-primary css-checkbox">
-                                        <input type="checkbox" class="css-control-input" id="signup-terms"
-                                            name="signup-terms">
-                                        <span class="css-control-indicator"></span>
-                                        I agree to Terms &amp; Conditions
-                                    </label>
+
                                 </div>
                             </div>
                             <div class="form-group row gutters-tiny">

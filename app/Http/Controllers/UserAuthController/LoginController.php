@@ -31,8 +31,10 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
-        // dd($request->all());
-        if(Auth::guard('web')->attempt(['email'=>$request->email,'password'=>$request->password]))
+
+        $request=$request->validated();
+        if(Auth::guard('web')->attempt(['email'=>$request['email'],'password'=>$request['password']]))
+
         {
             return redirect()->route('users.dashboardShow');
         }

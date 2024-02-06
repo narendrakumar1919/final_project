@@ -41,9 +41,9 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        // dd(request()->all);
+        $request=$request->validated();
 
-        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::guard('admin')->attempt(['email' => $request['email'], 'password' => $request['password']])) {
             $adminName = Auth::guard('admin')->user();
             session(['adminName' => $adminName->name]);
             return redirect()->route('admin.dashboard');

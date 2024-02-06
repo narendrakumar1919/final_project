@@ -31,13 +31,12 @@ Route::get('/', function () {
 Route::get('users/login', [UserLoginController::class,'loginShow'])->name('users.loginShow');
 // Route::get('user/login', [UserLoginController::class,'loginShow'])->name('loginShow');
 Route::post('user/login', [UserLoginController::class,'login'])->name('user.login');
-
 Route::middleware(['auth'])->group(function () {
 
     Route::get('users/dashboard',[UserDashboardController::class,'dashboard'])->name('users.dashboardShow');
-    Route::resource('users', UserRegisterController::class);
 
 });
+Route::resource('users', UserRegisterController::class);
 
 Route::get('admin/login', [AdminLoginController::class,'loginShow'])->name('admins.loginShow');
 Route::post('admin/login', [AdminLoginController::class,'login'])->name('admin.login');

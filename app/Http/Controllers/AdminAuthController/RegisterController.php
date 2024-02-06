@@ -4,7 +4,7 @@ namespace App\Http\Controllers\AdminAuthController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminRequest;
-use App\Models\admin;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -38,7 +38,14 @@ class RegisterController extends Controller
      */
     public function store(AdminRequest $request)
     {
-        $admin=admin::create(['name'=>$request->name,'email'=>$request->email,'mobile'=>$request->mobile,'password'=>Hash::make($request->password),'confirm_password'=>Hash::make($request->confirm_password)]);
+        $request=$request->validated();
+        $input=['name'=>$request['name'],
+                'email'=>$request['email'],
+                'mobile'=>$request['mobile'],
+                'password'=>Hash::make($request['password']),
+                'confirm_password'=>Hash::make($request['confirm_password'])];
+
+        $admin=Admin::create($input);
         return redirect()->route('admins.loginShow');
     }
 

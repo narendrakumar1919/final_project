@@ -19,4 +19,13 @@ class ProductService{
        $product=Product::create($input);
        return $product;
     }
+    function update($request, string $id){
+        $product=Product::where('id',$id)->update($request);
+        return $product;
+     }
+
+     function updateWithImage($request, string $id){
+        $product=Product::where('id',$id)->update($request);
+        return $product;
+     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductAddRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,13 +15,22 @@ class ProductAddRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd(request()->all());.
+
+        if(request()->path() == 'products/create'){
         return [
             'product_name'=>'required|alpha',
             'category_id'=>'required',
             'description'=>'required',
-            'image'=>'required',
+            'image'=>'required|mimes:jpg,png,jpeg,gif',
         ];
+        }else{
+        return [
+            'product_name' => 'required|alpha',
+            'description' => 'required',
+            'category_id'=>'required',
+
+        ];
+        }
     }
     public function messages(): array
     {

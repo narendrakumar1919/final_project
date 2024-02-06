@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryAddRequest;
-use App\Http\Requests\CategoryUpdateRequest;
+use App\Http\Requests\CategoryRequest;
 use App\Http\Services\CategoryService;
 use App\Models\Category;
-use App\Models\Product;
 use App\Http\Services\FileService;
 use Illuminate\Http\Request;
 
@@ -31,25 +29,15 @@ class CategoryController extends Controller
         // }else
         // return view('admin.category.index');
 
-
         if ($request->ajax()) {
             $data = Category::select('*');
             if(isset($request->status)){
                 $data = $data->where('status', $request->status );
             }
-
             return datatables()->eloquent($data)->toJson();
-
         }
 
-
         return view('admin.category.index');
-
-
-
-
-
-
     }
 
 
@@ -65,8 +53,9 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CategoryAddRequest $request)
+    public function store(CategoryRequest $request)
     {
+        $validateData=$request->validated();
         $file = $request->file('image');
         //Move Uploaded File
         $destinationPath = 'assets/media/photos';
@@ -74,35 +63,25 @@ class CategoryController extends Controller
         $image=$this->fileService->fileUpload($file,$destinationPath);
 
         $inputs=[
-            'category_name' => $request->category_name,
-            'description' => $request->description,
+            'category_name' => $validateData['category_name'],
+            'description' => $validateData['description'],
             'image' => $image,
             'status'=>'1'
-
         ];
         $blog=$this->categoryService->create($inputs);
 
         return redirect()->route('categories.index');
     }
 
-    // public function (Request $request)
-    // {
-    //     if($request->ajax()){
-    //         return datatables()->eloquent(Blog::query())->toJson();
-    //     }else{
 
-    //     return view('blog.admin');
-    //     }
-
-    // }
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $product = Category::where('id',$id)->first();
-        return view('admin.category.detail',['show'=>$product]);
+        $category = Category::where('id',$id)->first();
+        return view('admin.category.detail',['show'=>$category]);
     }
 
     /**
@@ -110,22 +89,24 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Category::where('id',$id)->first();
-        return view('admin.category.edit',['edit'=>$product]);
+        $category = Category::where('id',$id)->first();
+        return view('admin.category.edit',['edit'=>$category]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CategoryUpdateRequest $request, string $id)
+    public function update(CategoryRequest $request, string $id)
     {
-        // dd(request()->all());
-        if($request->image==null)
+        $validateData=$request->validated();
+        if(($request->image)==null)
         {
-        $product=Category::where('id',$id)->update([
-            'category_name' => $request->category_name,
-            'description' => $request->description,
-        ]);
+        $inputs=[
+            'category_name' => $validateData['category_name'],
+            'description' => $validateData['description'],
+        ];
+
+        $category=$this->categoryService->update($inputs,$id);
         }else
         {
             $file = $request->file('image');
@@ -135,15 +116,14 @@ class CategoryController extends Controller
             $image=$this->fileService->fileUpload($file,$destinationPath);
 
             $inputs=[
-                'category_name' => $request->category_name,
-                'description' => $request->description,
+                'category_name' => $validateData['category_name'],
+                'description' => $validateData['description'],
                 'image' => $image,
             ];
-            $product=Category::where('id',$id)->update($inputs);
+            $category=$this->categoryService->updateWithImage($inputs,$id);
         }
 
-        $product = Category::where('id',$id)->first();
-        return view('admin.category.edit',['edit'=>$product]);
+        return redirect()->back()->with('success', "Updated");
     }
 
     /**

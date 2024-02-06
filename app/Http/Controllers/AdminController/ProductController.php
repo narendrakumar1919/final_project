@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductAddRequest;
+use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Services\FileService;
 use App\Http\Services\ProductService;
@@ -65,9 +65,9 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        // dd(request()->all());
+        $validateData=$request->validated();
 
         $file = $request->file('image');
         //Move Uploaded File
@@ -76,15 +76,16 @@ class ProductController extends Controller
         $image=$this->fileService->fileUpload($file,$destinationPath);
 
         $inputs=[
-            'product_name' => $request->product_name,
-            'description' => $request->description,
+
+            'product_name' => $validateData['product_name'],
+            'category_id' => $validateData['category_id'],
+            'description' => $validateData['description'],
             'image' => $image,
             'status'=>'1',
-            'category_id'=>$request->category_id
 
         ];
-        // dd($inputs);
-        $blog=$this->productService->create($inputs);
+
+        $product=$this->productService->create($inputs);
 
         return redirect()->route('products.index');
     }
@@ -123,17 +124,21 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductUpdateRequest $request, string $id)
+    public function update(ProductRequest $request, string $id)
     {
-        // dd(request()->all());
 
-        if($request->image==null)
+
+        $validateData=$request->validated();
+        if(($request->image)==null)
         {
-        $product=Product::where('id',$id)->update([
-            'product_name' => $request->product_name,
-            'category_id'=>$request->category_id,
-            'description' => $request->description,
-        ]);
+            // dd("redfs");
+        $inputs=[
+            'product_name' => $validateData['product_name'],
+            'category_id' => $validateData['category_id'],
+            'description' => $validateData['description'],
+        ];
+
+        $product=$this->productService->update($inputs,$id);
         }else
         {
             $file = $request->file('image');
@@ -143,15 +148,15 @@ class ProductController extends Controller
             $image=$this->fileService->fileUpload($file,$destinationPath);
 
             $inputs=[
-                'product_name' => $request->product_name,
-                'category_id'=>$request->category_id,
-                'description' => $request->description,
+                'product_name' => $validateData['product_name'],
+                'category_id' => $validateData['category_id'],
+                'description' => $validateData['description'],
                 'image' => $image,
             ];
-            $product=Product::where('id',$id)->update($inputs);
+            $product=$this->productService->updateWithImage($inputs,$id);
         }
-        return redirect()->back()->with('success', "Updated");
 
+        return redirect()->back()->with('success', "Updated");
 
     }
 
@@ -163,7 +168,6 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         Product::find($id)->delete();
-
         return response()->json([
             'success' => 'Record has been deleted successfully!'
         ],200);

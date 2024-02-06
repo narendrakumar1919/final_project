@@ -7,7 +7,7 @@
         <div class="content">
             <div class="block">
                 <div class="block-header block-header-default">
-                    <h3 class="block-title">Edit Categories</h3>
+                    <h3 class="block-title">Edit Products</h3>
                 </div>
                 <div class="block-content">
                     {!! Form::model($edit, ['url' => route('products.update', $edit->id), 'method' => 'PUT', 'files' => true]) !!}
@@ -37,6 +37,6 @@
             }
         </script>
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
-    {!! JsValidator::formRequest('App\Http\Requests\ProductUpdateRequest') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\ProductRequest') !!}
 
 @endpush

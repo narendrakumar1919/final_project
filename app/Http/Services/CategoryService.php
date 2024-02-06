@@ -19,4 +19,14 @@ class CategoryService{
        $category=Category::create($input);
        return $category;
     }
+
+    function update($request, string $id){
+        $category=Category::where('id',$id)->update($request);
+        return $category;
+     }
+
+     function updateWithImage($request, string $id){
+        $category=Category::where('id',$id)->update($request);
+        return $category;
+     }
 }

@@ -64,23 +64,5 @@
 
     </main>
     <!-- END Page Content -->
-@endsection
-@push('script')
-    <!-- Laravel Javascript Validation -->
 
-
-        <script>
-            selectImage.onchange = evt => {
-                preview = document.getElementById('preview');
-                preview.style.display = 'block';
-                const [file] = selectImage.files
-                if (file) {
-                    preview.src = URL.createObjectURL(file)
-                }
-            }
-        </script>
-    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
-    {!! JsValidator::formRequest('App\Http\Requests\CategoryAddRequest') !!}
-
-@endpush
 
