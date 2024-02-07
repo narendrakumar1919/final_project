@@ -70,7 +70,7 @@ class CategoryController extends Controller
         ];
         $blog=$this->categoryService->create($inputs);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success',"Created");
     }
 
 

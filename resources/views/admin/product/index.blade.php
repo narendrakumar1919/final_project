@@ -5,6 +5,12 @@
 
         <!-- Page Content -->
         <div class="content">
+            <div class="content">
+                @if(session('success'))
+                <div class="alert alert-success">
+                    Product added successfully
+                </div>
+            @endif
 
             <div class="row mb-5">
                 <div class="col-lg-12">
@@ -230,7 +236,24 @@
             console.log("It failed");
         });
 
-        $(document).on("click", "#changeStatus", function(){
+        $(document).on("click", "#changeStatus", function(event){
+
+                    var form =  $(this).closest("form");
+                    var id = $(this).attr("data-status");
+
+        event.preventDefault();
+        var text = (id == 0) ? "If you deactivate this, it will not be available for users." : "If you activate this, it will be available for users.";
+        swal({
+            title: "Are you sure!",
+            text: text,
+            icon: "warning",
+            type: "warning",
+            buttons: ["Cancel","Yes!"],
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Deactivate!'
+        }).then((willDelete) => {
+    if (willDelete) {
             var id = $(this).data("id");
             var status = $(this).data("status");
             var token = "{{ csrf_token() }}";
@@ -253,16 +276,18 @@
                     console.log("Error in change status operation");
                 }
             });
+        }
         });
+     });
     </script>
 @endpush
 
 @push('script')
 <style>
     #datatable_ajax_filter  {
-        margin-left: 250;
+        margin-left: 320;
     }
 </style>
 @endpush
 
-{{-- <span class="badge badge-primary">Personal</span> --}}
+

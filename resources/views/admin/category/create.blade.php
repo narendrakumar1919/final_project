@@ -6,6 +6,11 @@
         <!-- Page Content -->
         <div class="content">
             <div class="block">
+                @if(session('success'))
+                <div class="alert alert-danger">
+                    Category added successfully
+                </div>
+            @endif
                 <div class="block-header block-header-default">
                     <h3 class="block-title">Category</h3>
                 </div>

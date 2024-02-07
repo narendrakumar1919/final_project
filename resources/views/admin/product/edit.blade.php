@@ -6,6 +6,11 @@
         <!-- Page Content -->
         <div class="content">
             <div class="block">
+                @if(session('success'))
+                <div class="alert alert-success">
+                    Product updated successfully
+                </div>
+            @endif
                 <div class="block-header block-header-default">
                     <h3 class="block-title">Edit Products</h3>
                 </div>

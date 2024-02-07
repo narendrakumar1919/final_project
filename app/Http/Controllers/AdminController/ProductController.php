@@ -87,7 +87,7 @@ class ProductController extends Controller
 
         $product=$this->productService->create($inputs);
 
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->with('success',"Added");
     }
 
     // public function (Request $request)

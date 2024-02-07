@@ -7,6 +7,11 @@
 
         <div class="content">
             <div class="block">
+                @if(session('success'))
+                <div class="alert alert-success">
+                    Category updated successfully
+                </div>
+            @endif
                 <div class="block-header block-header-default">
                     <h3 class="block-title">Edit Categories</h3>
                 </div>
