@@ -2,7 +2,7 @@
 @section('main')
     <!-- Page Content -->
     <main id="main-container">
-
+        {{ Breadcrumbs::render('products.edit',$edit) }}
         <!-- Page Content -->
         <div class="content">
             <div class="block">

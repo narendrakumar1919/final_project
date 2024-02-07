@@ -2,7 +2,7 @@
 @section('main')
     <!-- Page Content -->
     <main id="main-container">
-
+        {{ Breadcrumbs::render('products.index') }}
         <!-- Page Content -->
         <div class="content">
             <div class="content">
@@ -12,15 +12,13 @@
                 </div>
             @endif
 
-            <div class="row mb-5">
-                <div class="col-lg-12">
-                    <a href="{{ route('products.create') }}" class="btn btn-primary">Add Product</a>
-                </div>
-            </div>
+
 
             <div class="block">
                 <div class="block-header block-header-default">
                     <h3 class="block-title">Products</h3>
+                    <a href="{{ route('products.create') }}" class="btn btn-primary">Add Product</a>
+
                 </div>
                 <div class="block-content block-content-full">
                     <!-- DataTables functionality is initialized with .js-dataTable-full class in js/pages/be_tables_datatables.min.js which was auto compiled from _es6/pages/be_tables_datatables.js -->
@@ -94,6 +92,7 @@
                 data: function (d) {
                     d.status = $('#status').val(),
                     d.category_id=$('#category_id').val()
+                    d.order = [{column: 0, dir: 'desc'}];
                 }
           },
                 columns: [{
@@ -125,6 +124,7 @@
                         name: 'products.image',
                         render: function(data, type, row, meta) {
                             return `<img src="{{ asset('assets/media/photos') }}/${data}" alt="img" width="50%" height="50%">`
+
                         }
                     },
                     {

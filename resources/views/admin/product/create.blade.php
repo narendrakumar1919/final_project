@@ -2,6 +2,7 @@
 @section('main')
     <!-- Page Content -->
     <main id="main-container">
+        {{ Breadcrumbs::render('products.create') }}
 
         <!-- Page Content -->
         <div class="content">

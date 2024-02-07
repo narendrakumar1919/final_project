@@ -3,6 +3,7 @@
 
     <!-- Page Content -->
     <main id="main-container">
+        {{ Breadcrumbs::render('categories.detail',$show) }}
     <div class="bg-primary">
     <div class="bg-pattern bg-black-op-25" style="background-image: url('assets/media/various/bg-pattern.png');">
         <!-- Page Content -->
@@ -43,6 +44,8 @@
                         <a class="text-muted" href="javascript:void(0)">
                             <i class="fa fa-fw fa-tag mr-5"></i>News
                         </a>
+                        <a href="{{  route('categories.edit', ['category' => $show->id])}}" class="btn btn-sm btn-secondary
+                            ml-10"><i class="fa fa-edit"> Edit</i></a>
                     </div>
                     <p>{{$show->description}}</p>
 

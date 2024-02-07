@@ -2,6 +2,7 @@
 @section('main')
     <!-- Page Content -->
     <main id="main-container">
+        {{ Breadcrumbs::render('categories.edit',$edit) }}
 
         <!-- Page Content -->
 

@@ -2,6 +2,7 @@
 @section('main')
     <!-- Page Content -->
     <main id="main-container">
+        {{ Breadcrumbs::render('categories.index') }}
 
         <!-- Page Content -->
         <div class="content">
@@ -10,15 +11,12 @@
                 Category created successfully
             </div>
         @endif
-            <div class="row mb-5">
-                <div class="col-lg-12">
-                    <a href="{{ route('categories.create') }}" class="btn btn-primary">Add Categories</a>
-                </div>
-            </div>
+
 
             <div class="block">
                 <div class="block-header block-header-default">
                     <h3 class="block-title">Categories</h3>
+                    <a href="{{ route('categories.create') }}" class="btn btn-primary">Add Categories</a>
                 </div>
 
                 <div class="block-content block-content-full">
@@ -88,13 +86,13 @@
         var oTable = $('#datatable_ajax').DataTable({
             processing: true,
             serverSide: true,
-            // paging: false,
+            paging: true,
             // ajax: "{{ route('categories.store') }}",
             ajax: {
             url: "{{ route('categories.store') }}",
             data: function (d) {
                 d.status = $('#status').val()
-
+                d.order = [{column: 0, dir: 'desc'}];
             }
           },
 

@@ -46,27 +46,33 @@
             <!-- END Activity -->
 
             <!-- Profile -->
+            @if(request()->is('products')||request()->is('categories'))
             <div class="block pull-r-l">
                 <div class="block-header bg-body-light">
                     <h3 class="block-title">
-                        <i class="fa fa-fw fa-pencil font-size-default mr-5"></i>Profile
+                        <i class="fa fa-fw fa-pencil font-size-default mr-5"></i>Filter
                     </h3>
-                    <div class="block-options">
+                    {{-- <div class="block-options">
                         <button type="button" class="btn-block-option" data-toggle="block-option"
                             data-action="content_toggle"></button>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="block-content">
                     <form action="be_pages_dashboard.html" method="post" onsubmit="return false;">
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label><strong>Status :</strong></label>
+
+                                   <label><strong>Status :</strong></label>
                                     <select id='status' class="form-control" style="width: 200px">
                                         <option value="">--Select Status--</option>
                                         <option value="1">Active</option>
                                         <option value="0">Deactive</option>
                                     </select>
+
+
+
+
                                 </div>
                             </div>
                         </div>
@@ -91,13 +97,14 @@
                         <div class="form-group row">
                             <div class="col-6">
                                 <button type="submit" id='submitbtn' class="btn btn-block btn-alt-primary">
-                                    <i class="fa fa-refresh mr-5"></i> Update
+                                    <i class="fa fa-refresh mr-5"></i> Filter
                                 </button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
+            @endif
             <!-- END Profile -->
 
             <!-- Settings -->
@@ -204,15 +211,15 @@
             <div class="content-side content-side-full">
                 <ul class="nav-main">
                     <li>
-                        <a href="{{ route('admin.dashboard') }}"><i class="si si-cup"></i><span
-                                class="sidebar-mini-hide">Dashboard</span></a>
+                        <a class="{{request()->is('admin/dashboard')?'active':''}}" href="{{ route('admin.dashboard') }}"><i class="si si-cup"></i><span
+                                class="sidebar-mini-hide active">Dashboard</span></a>
                     </li>
                     <li>
-                        <a href="{{ route('categories.index') }}"><i class="si si-social-dropbox"></i><span
+                        <a class="{{request()->is('categories')?'active':''}}" href="{{ route('categories.index') }}"><i class="si si-social-dropbox"></i><span
                                 class="sidebar-mini-hide">Category</span></a>
                     </li>
                     <li>
-                        <a href="{{ route('products.index') }}"><i class="fa fa-product-hunt"></i><span
+                        <a class="{{request()->is('products')?'active':''}}" href="{{ route('products.index') }}"><i class="fa fa-product-hunt"></i><span
                                 class="sidebar-mini-hide">Product</span></a>
                     </li>
                 </ul>
