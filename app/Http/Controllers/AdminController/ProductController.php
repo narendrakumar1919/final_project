@@ -19,33 +19,20 @@ class ProductController extends Controller
      */
     protected $fileService;
     protected $productService;
-    protected $productUpdateService;
+
     public function __construct()
     {
         $this->fileService=new FileService();
         $this->productService= new ProductService();
-        $this->productUpdateService=new ProductUpdateService();
+
     }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $query = $this->productService->index($request);
         if($request->ajax()){
-            $query= Product::query()->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select('products.id', 'products.product_name', 'products.description', 'categories.category_name', 'products.image', 'products.status');
-
-            if (isset($request->status) && isset($request->category_id)) {
-                $query = $query->where(function ($query) use ($request) {
-                    $query->where('products.status', $request->status)
-                          ->orWhere('categories.id', $request->category_id);
-                });
-            } elseif (isset($request->status)) {
-                $query = $query->where('products.status', $request->status);
-            } elseif (isset($request->category_id)) {
-                $query = $query->where('categories.id', $request->category_id);
-            }
-
         return datatables()->eloquent($query)->toJson();
         }else
         $data = Category::pluck('category_name' ,'id');
@@ -75,17 +62,7 @@ class ProductController extends Controller
 
         $image=$this->fileService->fileUpload($file,$destinationPath);
 
-        $inputs=[
-
-            'product_name' => $validateData['product_name'],
-            'category_id' => $validateData['category_id'],
-            'description' => $validateData['description'],
-            'image' => $image,
-            'status'=>'1',
-
-        ];
-
-        $product=$this->productService->create($inputs);
+        $product=$this->productService->create($validateData,$image);
 
         return redirect()->route('products.index')->with('success',"Added");
     }
@@ -132,13 +109,8 @@ class ProductController extends Controller
         if(($request->image)==null)
         {
             // dd("redfs");
-        $inputs=[
-            'product_name' => $validateData['product_name'],
-            'category_id' => $validateData['category_id'],
-            'description' => $validateData['description'],
-        ];
 
-        $product=$this->productService->update($inputs,$id);
+        $product=$this->productService->update($validateData,$id);
         }else
         {
             $file = $request->file('image');
@@ -146,14 +118,9 @@ class ProductController extends Controller
             $destinationPath = 'assets/media/photos';
 
             $image=$this->fileService->fileUpload($file,$destinationPath);
+            unset($validateData['image']);
 
-            $inputs=[
-                'product_name' => $validateData['product_name'],
-                'category_id' => $validateData['category_id'],
-                'description' => $validateData['description'],
-                'image' => $image,
-            ];
-            $product=$this->productService->updateWithImage($inputs,$id);
+            $product=$this->productService->updateWithImage($destinationPath,$image, $id);
         }
 
         return redirect()->back()->with('success', "Updated");
@@ -167,10 +134,16 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Product::find($id)->delete();
+       $product= Product::find($id)->delete();
+       if($product){
         return response()->json([
             'success' => 'Record has been deleted successfully!'
         ],200);
+      }else{
+        return response()->json([
+            'success' => 'Record has not deleted!'
+        ],401);
+      }
     }
 
     /**
@@ -186,10 +159,15 @@ class ProductController extends Controller
         $product=Product::where('id',$id)->update([
             'status'=>$request->status,
         ]);
-
+        if($product){
         return response()->json([
             'success' => 'Record has been updated successfully!'
         ],200);
+       }else{
+        return response()->json([
+            'success' => 'Record has not updated !'
+        ],401);
+       }
 
     }
 
