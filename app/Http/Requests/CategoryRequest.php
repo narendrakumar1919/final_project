@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class CategoryRequest extends FormRequest
 {
     /**
@@ -24,14 +25,15 @@ class CategoryRequest extends FormRequest
 
             if(request()->path() == 'categories/create'){
             return [
-                'category_name' => 'required|alpha',
-                'description' => 'required',
+                'category_name' => 'required|min:4|max:30|alpha_spaces',
+                'description' => 'required|min:5||max:200',
                 'image' => 'required|mimes:jpg,png,jpeg,gif',
             ];
             }else{
                 return[
-                    'category_name' => 'required|alpha',
-                    'description' => 'required',
+                    'category_name' => 'required|min:4|max:30|alpha_spaces',
+                    'description' => 'required|min:5||max:200',
+                    'image'=>'mimes:jpg,png,jpeg,gif'
                 ];
             }
         // }
@@ -40,10 +42,11 @@ class CategoryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // 'category_name.required' => 'A title is required',
-            // 'category_name.alpha' => 'Category Name must be in Alphabet',
+            'category_name.alpha_spaces' => 'may only contain letters and spaces',
+            // 'category_name.alpha' => 'Category Name must be in Alphabettttt',
             // 'description.required' => 'A description is required',
             // 'image.required' => 'Image is required',
+
         ];
     }
 }

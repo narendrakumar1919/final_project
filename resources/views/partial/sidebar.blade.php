@@ -14,7 +14,7 @@
 
                 <!-- User Info -->
                 <div class="content-header-item">
-                    <a class="img-link mr-5" href="be_pages_generic_profile.html">
+                    <a class="img-link mr-5" href="javascript:void(0)">
                         <img class="img-avatar img-avatar32" src="{{ asset('assets/media/avatars/avatar15.jpg') }}"
                             alt="">
                     </a>
@@ -58,7 +58,7 @@
                     </div> --}}
                 </div>
                 <div class="block-content">
-                    <form action="be_pages_dashboard.html" method="post" onsubmit="return false;">
+                    <form action="javascript:void(0)" id="filterForm" method="post" onsubmit="return false;">
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group">
@@ -67,7 +67,8 @@
                                     <select id='status' class="form-control" style="width: 200px">
                                         <option value="">--Select Status--</option>
                                         <option value="1">Active</option>
-                                        <option value="0">Deactive</option>
+                                        <option value="0">Not-active</option>
+                                        <option value="2">All</option>
                                     </select>
 
 
@@ -80,7 +81,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     @if (isset($categories))
-                                    <label><strong>Status :</strong></label>
+                                    <label><strong>Category :</strong></label>
 
                                     <select name="category_id" id="category_id" class="form-control">
                                         <option value="" disabled selected>Select a category</option>
@@ -88,6 +89,7 @@
                                             <option value="{{ $categoryId }}">{{ $categoryLabel }}</option>
                                         @endforeach
                                     </select>
+                                    <input type="hidden" id="reset" value="2" name="reset">
                                     @endif
                                 </div>
                             </div>
@@ -95,10 +97,19 @@
 
 
                         <div class="form-group row">
-                            <div class="col-6">
-                                <button type="submit" id='submitbtn' class="btn btn-block btn-alt-primary">
-                                    <i class="fa fa-refresh mr-5"></i> Filter
-                                </button>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" id="submitbtn" class="btn btn-block btn-alt-primary">
+                                            <i class="fa fa-refresh mr-1"></i> Filter
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="submit" id="resetbtn" class="btn btn-block btn-alt-primary">
+                                            <i class="fa fa-refresh mr-1"></i> Reset
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -154,7 +165,7 @@
 
                     <!-- Logo -->
                     <div class="content-header-item">
-                        <a class="link-effect font-w700" href="index.html">
+                        <a class="link-effect font-w700" href="javascript:void(0)">
                             <i class="si si-fire text-primary"></i>
                             <span class="font-size-xl text-dual-primary-dark">code</span><span
                                 class="font-size-xl text-primary">base</span>
@@ -177,7 +188,7 @@
 
                 <!-- Visible only in normal mode -->
                 <div class="sidebar-mini-hidden-b text-center">
-                    <a class="img-link" href="be_pages_generic_profile.html">
+                    <a class="img-link" href="javascript:void(0)">
                         <img class="img-avatar" src="{{ asset('assets/media/avatars/avatar15.jpg') }}"
                             alt="">
                     </a>
@@ -197,7 +208,7 @@
                             </a>
                         </li>
                         <li class="list-inline-item">
-                            <a class="link-effect text-dual-primary-dark" href="op_auth_signin.html">
+                            <a class="link-effect text-dual-primary-dark" href="javascript:void(0)">
                                 <i class="si si-logout"></i>
                             </a>
                         </li>

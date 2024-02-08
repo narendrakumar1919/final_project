@@ -24,14 +24,14 @@ class ProfileUpdateRequest extends FormRequest
 if(request()->currentEmail==request()->email){
 
         return [
-            'name'=>'required|min:4',
+            'name'=>'required|min:4|max:30|alpha_spaces',
             'mobile'=>'required|numeric|digits:10|regex:/^[6-9]\d{9}$/',
             'email'=>'required|email',
         ];
     }
     else{
         return [
-            'name'=>'required|min:4',
+            'name'=>'required|min:4|max:30|alpha_spaces',
             'mobile'=>'required|numeric|digits:10|regex:/^[6-9]\d{9}$/',
             'email'=>'required|email|unique:admins,email',
         ];
@@ -40,12 +40,12 @@ if(request()->currentEmail==request()->email){
     public function messages(): array
     {
         return [
-            'name.required'=> 'Name is required',
-            'mobile.required'=> 'Mobile no. is required',
-            'mobile.digits'=>'Enter a Valid no.',
+            // 'name.required'=> 'Name is required',
+            // 'mobile.required'=> 'Mobile no. is required',
+            // 'mobile.digits'=>'Enter a Valid no.',
             'mobile.regex'=>'Enter a Valid no.',
-            'email.required'=> 'Email is required',
-            'email.unique'=>'Email already registered',
+            // 'email.required'=> 'Email is required',
+            // 'email.unique'=>'Email already registered',
                 ];
     }
 }

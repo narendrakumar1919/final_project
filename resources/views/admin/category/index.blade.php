@@ -8,7 +8,7 @@
         <div class="content">
             @if(session('success'))
             <div class="alert alert-success">
-                Category created successfully
+                {{ session('success') }}
             </div>
         @endif
 
@@ -87,12 +87,13 @@
             processing: true,
             serverSide: true,
             paging: true,
+            order: [ [0, 'desc'] ],
+
             // ajax: "{{ route('categories.store') }}",
             ajax: {
             url: "{{ route('categories.store') }}",
             data: function (d) {
                 d.status = $('#status').val()
-                d.order = [{column: 0, dir: 'desc'}];
             }
           },
 
@@ -157,6 +158,11 @@
            console.log('success');
             oTable.draw();
 
+        });
+        $(document).on("click", "#resetbtn", function() {
+           $('#filterForm').trigger("reset");
+           $("#status").prop("selectedIndex", 0);
+           oTable.draw();
         });
 
         $(document).on("click", "#deleteProduct", function() {

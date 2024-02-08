@@ -6,7 +6,7 @@
         <!-- Page Content -->
         <div class="content">
             @if(session('success'))
-            <div class="alert alert-danger">
+            <div class="alert alert-success">
                 Profile Updated successfully
             </div>
         @endif

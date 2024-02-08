@@ -35,9 +35,18 @@ class CategoryService{
      function index($request){
 
          $data = Category::select('*');
+         if($request->status==1||$request->status==0){
           if(isset($request->status)){
+            //  dd('yguhijk');
                 $data = $data->where('status', $request->status );
             }
+         }
             return $data;
         }
+
+        function updateStatus($request, $id){
+
+            $category=$id->update($request);
+            return $category;
+         }
 }

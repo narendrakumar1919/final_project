@@ -4,10 +4,9 @@ namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use App\Http\Requests\ProductUpdateRequest;
+use App\Http\Requests\StatusUpdateRequest;
 use App\Http\Services\FileService;
 use App\Http\Services\ProductService;
-use App\Http\Services\ProductUpdateService;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -31,8 +30,9 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $query = $this->productService->index($request);
+
         if($request->ajax()){
+        $query = $this->productService->index($request);
         return datatables()->eloquent($query)->toJson();
         }else
         $data = Category::pluck('category_name' ,'id');
@@ -67,16 +67,6 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success',"Added");
     }
 
-    // public function (Request $request)
-    // {
-    //     if($request->ajax()){
-    //         return datatables()->eloquent(Blog::query())->toJson();
-    //     }else{
-
-    //     return view('blog.admin');
-    //     }
-
-    // }
 
     /**
      * Display the specified resource.
@@ -142,34 +132,29 @@ class ProductController extends Controller
       }else{
         return response()->json([
             'success' => 'Record has not deleted!'
-        ],401);
+        ],422);
       }
     }
 
     /**
      * update status from storage.
      */
-    public function statusUpdate(Request $request, string $id)
+    public function statusUpdate(StatusUpdateRequest $request, Product $id)
     {
     //    dd("hj");
-        $request->validate([
-            'status'=>'required|boolean',
-        ]);
+       $validateData=$request->validated();
 
-        $product=Product::where('id',$id)->update([
-            'status'=>$request->status,
-        ]);
-        if($product){
-        return response()->json([
-            'success' => 'Record has been updated successfully!'
-        ],200);
+       $product=$this->productService->updateStatus($validateData,$id);
+
+       if($product){
+           return response()->json([
+               'success' => 'Record has been updated successfully!'
+           ],200);
        }else{
-        return response()->json([
-            'success' => 'Record has not updated !'
-        ],401);
+           return response()->json([
+               'success' => 'Record has not updated!'
+           ],422);
        }
-
-    }
-
+   }
 
 }

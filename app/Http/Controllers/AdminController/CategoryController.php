@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\StatusUpdateRequest;
 use App\Http\Services\CategoryService;
 use App\Models\Category;
 use App\Http\Services\FileService;
@@ -28,9 +29,9 @@ class CategoryController extends Controller
         //     return datatables()->eloquent(Category::query())->toJson();
         // }else
         // return view('admin.category.index');
-       $data = $this->categoryService->index($request);
-        if ($request->ajax()) {
 
+        if ($request->ajax()) {
+            $data = $this->categoryService->index($request);
             return datatables()->eloquent($data)->toJson();
         }
 
@@ -70,16 +71,16 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        $category = Category::where('id',$id)->first();
+        // $category = Category::where('id',$id)->first();
         return view('admin.category.detail',['show'=>$category]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category  $category)
+    public function edit(Category $category)
     {
         // $category = Category::where('id',$id)->first();
         return view('admin.category.edit',['edit'=>$category]);
@@ -121,23 +122,21 @@ class CategoryController extends Controller
        else{
         return response()->json([
             'success' => 'Record has not deleted !'
-        ],401);
+        ],422);
        }
     }
 
-    public function statusUpdate(Request $request, Category $id)
+    public function statusUpdate(StatusUpdateRequest $request, Category $id)
     {
-    //    dd("hj");
-        $request->validate([
-            'status'=>'required|boolean',
-        ]);
 
+        $validateData=$request->validated();
         // $category=Category::where('id',$id)->update([
         //     'status'=>$request->status,
         // ]);
-        $category=$id->update([
-            'status'=>$request->status,
-        ]);
+        // $category=$id->update([
+        //     'status'=>$request->status,
+        // ]);
+        $category=$this->categoryService->updateStatus($validateData,$id);
 
         if($category){
             return response()->json([
@@ -146,7 +145,7 @@ class CategoryController extends Controller
         }else{
             return response()->json([
                 'success' => 'Record has not updated!'
-            ],401);
+            ],422);
         }
     }
 

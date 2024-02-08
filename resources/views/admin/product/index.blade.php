@@ -8,7 +8,7 @@
             <div class="content">
                 @if(session('success'))
                 <div class="alert alert-success">
-                    Product added successfully
+                    {{ session('success') }}
                 </div>
             @endif
 
@@ -85,14 +85,14 @@
             var oTable = $('#datatable_ajax').DataTable({
                 processing: true,
                 serverSide: true,
-                // paging: false,
+                order: [ [0, 'desc'] ],
+                paging: false,
 
                 ajax: {
                 url: "{{ route('products.store') }}",
                 data: function (d) {
                     d.status = $('#status').val(),
                     d.category_id=$('#category_id').val()
-                    d.order = [{column: 0, dir: 'desc'}];
                 }
           },
                 columns: [{
@@ -163,6 +163,12 @@
            console.log('success');
             oTable.draw();
 
+        });
+        $(document).on("click", "#resetbtn", function() {
+           $('#filterForm').trigger("reset");
+           $("#status").prop("selectedIndex", 0);
+           $("#category_id").prop("selectedIndex", 0);
+           oTable.draw();
         });
 
 

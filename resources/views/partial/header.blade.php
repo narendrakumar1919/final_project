@@ -93,12 +93,12 @@
                     <div class="dropdown-divider"></div>
                     <div class="row gutters-tiny text-center">
                         <div class="col-6">
-                            <a class="dropdown-item mb-0" href="be_layout_api.html">
+                            <a class="dropdown-item mb-0" href="javascript:void(0)">
                                 <i class="si si-chemistry mr-5"></i> Layout API
                             </a>
                         </div>
                         <div class="col-6">
-                            <a class="dropdown-item mb-0" href="be_ui_color_themes.html">
+                            <a class="dropdown-item mb-0" href="javascript:void(0)">
                                 <i class="fa fa-paint-brush mr-5"></i> Color Themes
                             </a>
                         </div>

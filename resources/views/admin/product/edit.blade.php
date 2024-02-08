@@ -8,7 +8,7 @@
             <div class="block">
                 @if(session('success'))
                 <div class="alert alert-success">
-                    Product updated successfully
+                    {{ session('success') }}
                 </div>
             @endif
                 <div class="block-header block-header-default">

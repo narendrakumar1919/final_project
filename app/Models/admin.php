@@ -22,7 +22,6 @@ class Admin extends Model implements Authenticatable
         'email',
         'mobile',
         'password',
-        'confirm_password',
 
     ];
 
