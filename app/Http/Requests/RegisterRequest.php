@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +22,23 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
 
+        if(request()->path() == 'admin/create'){
         return [
-            'name'=>'required|min:4',
+            'name'=>'required|min:4|max:30|',
             'mobile'=>'required|numeric|digits:10|regex:/^[6-9]\d{9}$/',
-            'email'=>'required|email|unique:users,email',
-            'password'=>'required|min:5',
+            'email'=>'required|email|unique:admins,email',
+            'password'=>'required|min:5|max:20',
             'confirm_password' => 'required|same:password'
         ];
+    }else{
+        return [
+            'name'=>'required|min:4|max:20|alpha_spaces',
+            'mobile'=>'required|numeric|digits:10|regex:/^[6-9]\d{9}$/',
+            'email'=>'required|email|unique:users,email',
+            'password'=>'required|min:5|max:20',
+            'confirm_password' => 'required|same:password'
+        ];
+    }
     }
     public function messages(): array
     {
@@ -42,5 +52,4 @@ class UserRequest extends FormRequest
               'password.required'=> 'Password is required'
           ];
     }
-
 }

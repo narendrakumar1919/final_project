@@ -6,7 +6,7 @@
         <!-- Page Content -->
         <div class="content">
             @if(session('success'))
-    <div class="alert alert-danger">
+    <div class="alert alert-success">
         Password Updated successfully
     </div>
 @endif

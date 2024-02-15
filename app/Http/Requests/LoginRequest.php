@@ -21,10 +21,17 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
+        if(request()->path() == 'admin/login'){
         return [
-            'email'=> 'required|email|exists:users',
-            'password'=> 'required'
+            'email'=> 'required|email|exists:admins',
+            'password'=> 'required|min:5||max:20'
         ];
+        }else{
+            return [
+                'email'=> 'required|email|exists:users',
+                'password'=> 'required|min:5||max:20'
+            ];
+        }
     }
     public function messages(): array
     {

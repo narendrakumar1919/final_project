@@ -2,19 +2,23 @@
 @section('main')
     <!-- Page Content -->
     <main id="main-container">
-
+        {{ Breadcrumbs::render('products.index') }}
         <!-- Page Content -->
         <div class="content">
-
-            <div class="row mb-5">
-                <div class="col-lg-12">
-                    <a href="{{ route('products.create') }}" class="btn btn-primary">Add Product</a>
+            <div class="content">
+                @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
                 </div>
-            </div>
+            @endif
+
+
 
             <div class="block">
                 <div class="block-header block-header-default">
                     <h3 class="block-title">Products</h3>
+                    <a href="{{ route('products.create') }}" class="btn btn-primary">Add Product</a>
+
                 </div>
                 <div class="block-content block-content-full">
                     <!-- DataTables functionality is initialized with .js-dataTable-full class in js/pages/be_tables_datatables.min.js which was auto compiled from _es6/pages/be_tables_datatables.js -->
@@ -81,7 +85,8 @@
             var oTable = $('#datatable_ajax').DataTable({
                 processing: true,
                 serverSide: true,
-                // paging: false,
+                order: [ [0, 'desc'] ],
+                paging: false,
 
                 ajax: {
                 url: "{{ route('products.store') }}",
@@ -119,6 +124,7 @@
                         name: 'products.image',
                         render: function(data, type, row, meta) {
                             return `<img src="{{ asset('assets/media/photos') }}/${data}" alt="img" width="50%" height="50%">`
+
                         }
                     },
                     {
@@ -157,6 +163,12 @@
            console.log('success');
             oTable.draw();
 
+        });
+        $(document).on("click", "#resetbtn", function() {
+           $('#filterForm').trigger("reset");
+           $("#status").prop("selectedIndex", 0);
+           $("#category_id").prop("selectedIndex", 0);
+           oTable.draw();
         });
 
 
@@ -230,7 +242,24 @@
             console.log("It failed");
         });
 
-        $(document).on("click", "#changeStatus", function(){
+        $(document).on("click", "#changeStatus", function(event){
+
+                    var form =  $(this).closest("form");
+                    var id = $(this).attr("data-status");
+
+        event.preventDefault();
+        var text = (id == 0) ? "If you deactivate this, it will not be available for users." : "If you activate this, it will be available for users.";
+        swal({
+            title: "Are you sure!",
+            text: text,
+            icon: "warning",
+            type: "warning",
+            buttons: ["Cancel","Yes!"],
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Deactivate!'
+        }).then((willDelete) => {
+    if (willDelete) {
             var id = $(this).data("id");
             var status = $(this).data("status");
             var token = "{{ csrf_token() }}";
@@ -253,16 +282,18 @@
                     console.log("Error in change status operation");
                 }
             });
+        }
         });
+     });
     </script>
 @endpush
 
 @push('script')
 <style>
     #datatable_ajax_filter  {
-        margin-left: 250;
+        margin-left: 320;
     }
 </style>
 @endpush
 
-{{-- <span class="badge badge-primary">Personal</span> --}}
+

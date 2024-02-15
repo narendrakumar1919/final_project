@@ -2,10 +2,15 @@
 @section('main')
     <!-- Page Content -->
     <main id="main-container">
-
+        {{ Breadcrumbs::render('products.edit',$edit) }}
         <!-- Page Content -->
         <div class="content">
             <div class="block">
+                @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
                 <div class="block-header block-header-default">
                     <h3 class="block-title">Edit Products</h3>
                 </div>

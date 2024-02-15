@@ -22,8 +22,9 @@
     <label class="col-lg-3 col-form-label" for="example-textarea-input">Photo</label>
     <div class="col-lg-7">
         {{ Form::file('image', ['id' => 'selectImage','accept'=>'image/png,image/gif,image/JPEG,image/jpg']) }}
+
         {{-- <input type="file" id="example-file-input-custom" name="image" data-toggle="custom-file-input"> --}}
-        <img id="preview" src="#" alt="your image" class="mt-3" style="display:none; height:50px; width:50px;"/>
+        <img id="preview" name='image' src="{{ request()->is('products/create') ? asset('assets/media/avatars/avatar15.jpg') : asset('assets/media/photos/' . $edit->image) }}" alt="your image" class="mt-3" style="height:50px; width:50px;"/>
     </div>
 
 </div>

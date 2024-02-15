@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\StatusUpdateRequest;
 use App\Http\Services\CategoryService;
 use App\Models\Category;
 use App\Http\Services\FileService;
@@ -30,10 +31,7 @@ class CategoryController extends Controller
         // return view('admin.category.index');
 
         if ($request->ajax()) {
-            $data = Category::select('*');
-            if(isset($request->status)){
-                $data = $data->where('status', $request->status );
-            }
+            $data = $this->categoryService->index($request);
             return datatables()->eloquent($data)->toJson();
         }
 
@@ -61,16 +59,11 @@ class CategoryController extends Controller
         $destinationPath = 'assets/media/photos';
 
         $image=$this->fileService->fileUpload($file,$destinationPath);
+        unset($validateData['image']);
 
-        $inputs=[
-            'category_name' => $validateData['category_name'],
-            'description' => $validateData['description'],
-            'image' => $image,
-            'status'=>'1'
-        ];
-        $blog=$this->categoryService->create($inputs);
+        $blog=$this->categoryService->create($validateData,$image);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success',"Created");
     }
 
 
@@ -78,18 +71,18 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        $category = Category::where('id',$id)->first();
+        // $category = Category::where('id',$id)->first();
         return view('admin.category.detail',['show'=>$category]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Category $category)
     {
-        $category = Category::where('id',$id)->first();
+        // $category = Category::where('id',$id)->first();
         return view('admin.category.edit',['edit'=>$category]);
     }
 
@@ -101,26 +94,15 @@ class CategoryController extends Controller
         $validateData=$request->validated();
         if(($request->image)==null)
         {
-        $inputs=[
-            'category_name' => $validateData['category_name'],
-            'description' => $validateData['description'],
-        ];
-
-        $category=$this->categoryService->update($inputs,$id);
+        $category=$this->categoryService->update($validateData,$id);
         }else
         {
             $file = $request->file('image');
             //Move Uploaded File
             $destinationPath = 'assets/media/photos';
-
             $image=$this->fileService->fileUpload($file,$destinationPath);
-
-            $inputs=[
-                'category_name' => $validateData['category_name'],
-                'description' => $validateData['description'],
-                'image' => $image,
-            ];
-            $category=$this->categoryService->updateWithImage($inputs,$id);
+            unset($validateData['image']);
+            $category=$this->categoryService->updateWithImage($validateData,$image,$id);
         }
 
         return redirect()->back()->with('success', "Updated");
@@ -131,28 +113,40 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        Category::find($id)->delete();
-
+        $category=Category::find($id)->delete();
+        if($category){
         return response()->json([
             'success' => 'Record has been deleted successfully!'
         ],200);
+       }
+       else{
+        return response()->json([
+            'success' => 'Record has not deleted !'
+        ],422);
+       }
     }
 
-    public function statusUpdate(Request $request, string $id)
+    public function statusUpdate(StatusUpdateRequest $request, Category $id)
     {
-    //    dd("hj");
-        $request->validate([
-            'status'=>'required|boolean',
-        ]);
 
-        $category=Category::where('id',$id)->update([
-            'status'=>$request->status,
-        ]);
+        $validateData=$request->validated();
+        // $category=Category::where('id',$id)->update([
+        //     'status'=>$request->status,
+        // ]);
+        // $category=$id->update([
+        //     'status'=>$request->status,
+        // ]);
+        $category=$this->categoryService->updateStatus($validateData,$id);
 
-        return response()->json([
-            'success' => 'Record has been updated successfully!'
-        ],200);
-
+        if($category){
+            return response()->json([
+                'success' => 'Record has been updated successfully!'
+            ],200);
+        }else{
+            return response()->json([
+                'success' => 'Record has not updated!'
+            ],422);
+        }
     }
 
 }

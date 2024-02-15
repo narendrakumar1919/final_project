@@ -283,7 +283,7 @@
 
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 
-    {!! JsValidator::formRequest('App\Http\Requests\UserRequest') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\RegisterRequest') !!}
 
     <!-- Page JS Code -->
 

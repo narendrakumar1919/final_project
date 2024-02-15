@@ -128,7 +128,7 @@
                                         {{ Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Email']) }}
                                     </div>
                                     @error('email')
-                                    <p class="error-help-block">Invalid Credential</p>
+                                    <p class="error-help-block">{{ $message }}</p>
                                 @enderror
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
                                         {{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Password']) }}
                                     </div>
                                     @error('password')
-                                    <p class="error-help-block">Invalid Credential</p>
+                                    <p class="error-help-block">{{ $message }}</p>
                                 @enderror
                                 </div>
                             </div>

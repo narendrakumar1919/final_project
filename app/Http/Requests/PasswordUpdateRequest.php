@@ -22,7 +22,7 @@ class PasswordUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password'=>'required|min:5',
+            'password'=>'required|min:5|max:20',
             'confirm_password' => 'required|same:password'
         ];
     }

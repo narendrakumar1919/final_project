@@ -18,17 +18,17 @@ class ProductRequest extends FormRequest
 
         if(request()->path() == 'products/create'){
         return [
-            'product_name'=>'required|alpha',
+            'product_name'=>'required|min:5|max:20|alpha_spaces',
             'category_id'=>'required',
-            'description'=>'required',
+            'description'=>'required|min:5||max:200',
             'image'=>'required|mimes:jpg,png,jpeg,gif',
         ];
         }else{
         return [
-            'product_name' => 'required|alpha',
-            'description' => 'required',
+            'product_name' => 'required|min:5|max:20|alpha_spaces',
+            'description' => 'required|min:5||max:200',
             'category_id'=>'required',
-
+            'image'=>'mimes:jpg,png,jpeg,gif'
         ];
         }
     }
